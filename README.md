@@ -1,2 +1,2 @@
-# vue.firebase
-Firebase Plugin for Vue.js
+# VueFirebase - Firebase Plugin for Vue.js
+
