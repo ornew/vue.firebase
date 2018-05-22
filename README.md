@@ -33,9 +33,12 @@ new Vue({
 ```
 
 ```javascript
+import {bindAuth} from 'vue-firebase-plugin'
 export default {
   template: '<div>{{uid}}</div>',
   computed: {
+    ...bindAuth(['uid']),
+    // or
     uid() {
       return this.$firebase().$auth.user.uid
     }
@@ -78,10 +81,10 @@ export default {
 
 ## Optional Plugin
 
- Plugin       | 
---------------|--------------
- Vuex         | Binding Firebase data to `vuex` Store | WIP
- Vue Router   | Guard Firebase Auth informations for `vue-router` | WIP
+ Plugin       | Status | Description
+--------------|--------|-----------------------------------------------------
+ Vuex         | WIP    | Binding Firebase data to `vuex` Store
+ Vue Router   | WIP    | Guard Firebase Auth informations for `vue-router`
 
 ## Create plugin
 
