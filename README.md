@@ -60,7 +60,7 @@ export default {
         store => store.doc('foo/doc')
       ).bind() // need bind
     },
-    
+
     // using component data
     ...bindStore({
       userdoc: (store, vm) =>
