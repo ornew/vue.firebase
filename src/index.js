@@ -27,8 +27,9 @@ export default class VueFirebase {
       this.apps[app.name] = new VueFirebaseApp(app, this.plugins)
     })
   }
-  app(name = DEFAULT_APP_NAME) {
-    return this.apps[name]
+  app(name = null) {
+    const _name = name ? name : DEFAULT_APP_NAME
+    return this.apps[_name]
   }
 }
 
@@ -38,7 +39,7 @@ VueFirebase.install = Vue => {
   Object.defineProperties(Vue.prototype, {
     $firebase: {
       get: function () {
-        return (name = DEFAULT_APP_NAME) => this.$root._firebase.app(name)
+        return (name = null) => this.$root._firebase.app(name)
       }
     },
   })
