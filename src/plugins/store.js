@@ -53,12 +53,12 @@ export class VueFirebaseStore {
   }
 }
 
-export function mapBind(appName, dict, options) {
+export function mapBind(refs, appName = null) {
   let map = {}
-  Object.keys(dict).forEach(key => {
+  Object.keys(refs).forEach(key => {
     map[key] = function() {
       const store = this.$firebase(appName).$store
-      return store.query(ref => dict[key](ref, {vm: this})).bind()
+      return store.query(store => refs[key](store, {vm: this})).bind()
     }
   })
   return map
