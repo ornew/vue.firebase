@@ -5,21 +5,22 @@ import Vue from 'vue'
 //TODO: inject hook
 export class VueFirebaseAuth {
   constructor(auth) {
+    const field = [
+      'uid', 'displayName', 'email', 'emailVerified', 'photoURL',
+      'isAnonymous', 'providerData',
+    ]
+    const hooks = {
+      onAuthStateChanged: [],
+    }
+    this._field = field
+    this._hooks = hooks
     this.auth = auth
     this.vm = new Vue({
       data: {
         authorized : false,
-        user: {
-          uid         : null,
-          photoURL    : null,
-          displayName : null,
-          email       : null,
-        },
+        ...field.reduce((obj, key) => {obj[key] = null; return obj}, {}),
       },
       created() {
-        this._hooks = {
-          onAuthStateChanged: [],
-        }
         auth.onAuthStateChanged(this.onAuthStateChanged.bind(this))
       },
       methods: {
@@ -27,25 +28,23 @@ export class VueFirebaseAuth {
           if(user) {
             // Sign In
             this.authorized  = true
-            this.user.uid         = user.uid
-            this.user.photoURL    = user.photoURL
-            this.user.displayName = user.displayName
-            this.user.email       = user.email
+            field.forEach(key => this.$data[key] = user[key])
           } else {
             // Sign Out
             this.authorized  = false
-            this.user.uid         = null
-            this.user.photoURL    = null
-            this.user.displayName = null
-            this.user.email       = null
+            field.forEach(key => this.$data[key] = null)
           }
-          this._hooks.onAuthStateChanged.forEach(hook => hook(user))
+          hooks.onAuthStateChanged.forEach(hook => hook(user))
         }
       },
     })
   }
-  get authorized() {return this.vm.authorized}
-  get user() {return this.vm.user}
+  get user() {
+    return this.vm.$data
+  }
+  onAuthStateChanged(callback) {
+    this._hooks.onAuthStateChanged.push(callback)
+  }
 }
 
 export default {
