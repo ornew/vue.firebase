@@ -33,12 +33,9 @@ new Vue({
 ```
 
 ```javascript
-import {bindAuth} from 'vue-firebase-plugin'
 export default {
   template: '<div>{{uid}}</div>',
   computed: {
-    ...bindAuth(['uid']),
-    // or
     uid() {
       return this.$firebase().$auth.user.uid
     }
@@ -47,14 +44,14 @@ export default {
 ```
 
 ```javascript
-import {bindStore} from 'vue-firebase-plugin'
+import {mapBind} from 'vue-firebase-plugin'
 export default {
   template: '<div>{{foo}}</div>',
   computed: {
-    ...bindStore({
+    ...mapBind({
       foo: store => store.doc('foo/doc'),
     }),
-    // or
+    // or manually
     foo() {
       return this.$firebase().$store.query(
         store => store.doc('foo/doc')
@@ -62,7 +59,7 @@ export default {
     },
 
     // using component data
-    ...bindStore({
+    ...mapBind({
       userdoc: (store, vm) =>
         store.doc(`${vm.uid}/doc`),
     }),
@@ -76,7 +73,7 @@ export default {
 -------------------|-------------
  Auth              | Supported
  FireStore         | Supported
- Readtime Database | NOT Supported
+ Realtime Database | NOT Supported
  Storage           | WIP
 
 ## Optional Plugin
